@@ -14,3 +14,4 @@ app.whenReady().then(()=>{
   win.on('closed',()=>{win=null});
 });
 app.on('window-all-closed',()=>{if(process.platform!=='darwin')app.quit()});
+app.on('before-quit',()=>{try{service?.close()}catch{}});

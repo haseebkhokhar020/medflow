@@ -107,6 +107,6 @@ function createService(root){
  default:throw Error('Unknown action.');
  }}
  function call(method,args={}){try{const result=execute(method,args);return result&&typeof result.then==='function'?result.catch(e=>{logError(method,e);throw e}):result}catch(e){logError(method,e);throw e}}
- return {call,backupDir,dbPath};
+ return {call,backupDir,dbPath,close(){sessions.clear();db.close()}};
 }
 module.exports={createService};
