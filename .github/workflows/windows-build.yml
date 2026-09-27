@@ -35,3 +35,12 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npx electron-builder --win nsis --${{ matrix.arch }} --publish never
+      # Manual release-candidate runs make installers available to the maintainer.
+      # A public prerelease is created separately, only after CI succeeds.
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          name: MedFlow-Setup-${{ matrix.arch }}
+          path: release/*.exe
+          if-no-files-found: error
+          retention-days: 7

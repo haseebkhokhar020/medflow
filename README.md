@@ -37,6 +37,12 @@ npm run pack:win32     # x86 NSIS installer; requires 32-bit native addon build 
 
 Installers appear under `release/`. GitHub Actions workflow `.github/workflows/windows-build.yml` automates both builds. The supplied `MedFlow-Setup-0.1.0-x64.exe` is a compiled but **unverified** NSIS installer. An evaluation x64 NSIS installer can also be cross-built on Linux with `npm run pack:linux:win` using a local `makensis` binary and the Windows SQLite prebuild. That build is **not tested on Windows** and its EXE resource icon is not edited without Wine. For a verified installer, build and test on Windows. Electron 22 is used because Electron 23+ dropped Windows 7/8/8.1 support; **compatibility of the installer on real Windows 7–11 machines has not been validated here**. Future Electron upgrades should be accompanied by a separate legacy build strategy. The installer is not code signed.
 
+## Download an evaluation installer
+
+When a beta prerelease is published, use the [GitHub Releases page](https://github.com/haseebkhokhar020/medflow/releases). Choose `MedFlow-Setup-0.1.0-x64.exe` for 64-bit Windows or `MedFlow-Setup-0.1.0-ia32.exe` for 32-bit Windows. Compare the downloaded file with `SHA256SUMS.txt` in the same release. The installers are unsigned and have not been through real-device Windows 7–11 installation, scanner, or printer acceptance testing. **Do not use real customer data yet.**
+
+GitHub Packages is not the appropriate distribution channel for a standalone Windows `.exe`; the installer is delivered as a GitHub Release asset, not as an npm or container package.
+
 ## Linux NSIS cross-build (unverified)
 
 Run `npm run pack:linux:win` after obtaining a Linux NSIS `makensis` binary (set `MAKENSIS` if necessary). The script bundles the Windows Electron app, installs the matching Windows Electron SQLite addon and compiles `installer/MedFlow.nsi` into `release/MedFlow-Setup-0.1.0-x64.exe`. The NSIS installer creates Start Menu shortcuts, offers an optional Desktop shortcut, registers with Apps & Features and preserves app-data on uninstall. This is **a compiled artifact, not a passed installation test**.

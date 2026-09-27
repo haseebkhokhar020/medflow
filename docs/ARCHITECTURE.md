@@ -27,7 +27,7 @@ The browser development preview uses `server/http.cjs` instead of Electron IPC. 
 
 - `npm run pack:win` / `npm run pack:win32`: build NSIS on Windows with electron-builder.
 - `npm run pack:linux:win`: evaluation-only Linux cross-build with a Linux NSIS compiler and the matching Windows/Electron SQLite addon. It **does not** test a Windows install.
-- CI checks tests and both Windows installer architectures. Installers are compiled in CI but not uploaded or published; this public repository distributes source only.
+- CI checks tests and both Windows installer architectures. Push CI builds installers without publishing binaries. Manual release-candidate CI runs upload short-lived installer artifacts for maintainer review; approved evaluation binaries belong in a clearly labeled prerelease, not Git history.
 
 ## Scaling and future work
 
