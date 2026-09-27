@@ -12,7 +12,7 @@
     "desktop": "electron .",
     "pack:win": "npm run build && electron-builder --win nsis --x64",
     "pack:win32": "npm run build && electron-builder --win nsis --ia32",
-    "test": "node --test tests/*.test.cjs",
+    "test": "node --test tests/workflow.test.cjs",
     "pack:linux:win": "bash scripts/package-linux.sh"
   },
   "dependencies": {
