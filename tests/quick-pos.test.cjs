@@ -98,7 +98,7 @@ test('upgrade from 1.1, backup and restore retain the quick price book and bills
   svc.call('setup',{store:'Old shop',name:'Owner',username:'owner',password:'old-password'});
   svc.close();const db=new Database(path.join(root,'medflow.sqlite'));db.prepare('UPDATE settings SET value=? WHERE key=?').run(JSON.stringify('1.1.0'),'appVersion');db.close();
   svc=createService(root);let token=svc.call('login',{username:'owner',password:'old-password'}).token;let c=(m,a={})=>svc.call(m,{...a,_token:token});
-  assert.ok(c('listBackups').some(x=>x.name.includes('preupgrade-1_1_0-to-1_2_0')));
+  assert.ok(c('listBackups').some(x=>x.name.includes('preupgrade-1_1_0-to-2_0_0')));
   const item=c('saveQuickPrice',{lookup_id:'custom',name:'First sale item',unit:'pack',price:110});
   c('quickCheckout',{items:[{id:item.id,quantity:1}]});
   const saved=await c('backup');

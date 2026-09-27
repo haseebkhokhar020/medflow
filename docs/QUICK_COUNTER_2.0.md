@@ -1,8 +1,8 @@
-# MedFlow quick counter — v1.2.0 development preview
+# MedFlow quick counter — v2.0.0
 
 ![Quick POS with a saved medicine price, an everyday item and a two-line bill](quick-counter-preview.png)
 
-**Not released as a Windows installer yet.** [v1.1.0 remains the latest published release](https://github.com/haseebkhokhar020/medflow/releases/latest). This page describes the working source preview, not the already-published installer.
+[Download the current Windows installers](https://github.com/haseebkhokhar020/medflow/releases/tag/v2.0.0). The owner approved the browser preview; automated Windows installer builds are separately verified on the release page. This is not a full on-device Windows workflow certification.
 
 ## One-minute start
 
@@ -21,4 +21,4 @@
 
 ## Current verification
 
-Source-level tests exercise PIN throttling, Owner-only pricing, rejected unpriced sales, medicine checks, overrides, refunds, reports, historical price snapshots and tracked-stock protection. The existing FEFO workflow tests still pass. The quick setup → search → price → bill → ledger interface was exercised in a headless browser using fictional demo data. **No v1.2.0 Windows installer has been released or fully device-tested.**
+Source-level tests exercise PIN throttling, Owner-only pricing, rejected unpriced sales, medicine checks, overrides, refunds, reports, historical price snapshots and tracked-stock protection. The existing FEFO workflow tests still pass. The quick setup → search → price → bill → ledger interface was exercised in a headless browser using fictional demo data. **The v2.0.0 Windows installers have not been retested through the full hands-on workflow on a physical shop computer.**
