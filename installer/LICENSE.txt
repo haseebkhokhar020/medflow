@@ -1,4 +1,4 @@
-MedFlow version 1.0.0 — Windows desktop application
+MedFlow version 1.0.1 — Windows desktop application
 Copyright 2026 MedFlow. All rights reserved.
 
 This installer is provided through the official MedFlow GitHub Releases page.

@@ -1,6 +1,6 @@
 # Known limitations and compatibility
 
-The store owner confirmed the full core workflow on **Windows 10** before the 1.0.0 stable release. That is not a certification for every OS, machine, printer, scanner, or pharmacy policy. Preserve an independent backup and evaluate the application in your own environment.
+The store owner confirmed the full core workflow on **Windows 10** before the 1.0 stable release. That is not a certification for every OS, machine, printer, scanner, or pharmacy policy. Preserve an independent backup and evaluate the application in your own environment.
 
 ## Compatibility and operating checks
 

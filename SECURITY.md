@@ -1,6 +1,6 @@
 # Security policy
 
-MedFlow 1.0.0 is an offline pharmacy **business-management** application whose core workflow was confirmed by its owner on Windows 10. It is **not** an independently security-audited or regulatory-certified medical product. The installers are currently unsigned.
+MedFlow is an offline pharmacy **business-management** application. The owner confirmed the v1.0.0 core workflow on Windows 10; the v1.0.1 patch installers are CI-built but have not been independently installed and retested on Windows. It is **not** an independently security-audited or regulatory-certified medical product. The installers are currently unsigned.
 
 Do not put patient information, credentials, live business databases, or backup archives in GitHub issues or pull requests. Never commit `*.sqlite`, the local `.medflow-data` folder, private keys, or `.env` secrets.
 

@@ -1,0 +1,199 @@
+1
+00:00:00,000 --> 00:00:06,000
+A complete guided tour with Urdu narration and English instructional captions.
+
+2
+00:00:06,000 --> 00:00:12,184
+A local-first workspace for a pharmacy. Start with the guided setup.
+
+3
+00:00:12,184 --> 00:00:18,368
+Add your store name, contact number and address for your workspace.
+
+4
+00:00:18,368 --> 00:00:24,552
+Choose an Owner account and a strong password. Keep it private.
+
+5
+00:00:24,552 --> 00:00:30,736
+Check the local currency and review your workspace preferences.
+
+6
+00:00:30,736 --> 00:00:37,920
+Use your new account. Your business records stay on this computer.
+
+7
+00:00:37,920 --> 00:00:46,850
+Use the persistent sidebar to move between daily tasks.
+
+8
+00:00:46,850 --> 00:00:55,780
+Sales, stock alerts, receivables and recent activity appear here.
+
+9
+00:00:55,780 --> 00:01:04,710
+Press Ctrl+K to search products and jump to workspace sections.
+
+10
+00:01:04,710 --> 00:01:14,640
+Open Help for POS shortcuts and a quick reference to core actions.
+
+11
+00:01:14,640 --> 00:01:20,920
+Open Suppliers to build the contact directory for your purchases.
+
+12
+00:01:20,920 --> 00:01:27,200
+Enter a fictional training supplier and save its contact information.
+
+13
+00:01:27,200 --> 00:01:33,480
+The supplier directory makes the same contact reusable on purchases.
+
+14
+00:01:33,480 --> 00:01:39,760
+Record the medicine name, category, SKU, barcode and prices.
+
+15
+00:01:39,760 --> 00:01:46,040
+A new product starts with zero units until stock is received.
+
+16
+00:01:46,040 --> 00:01:53,320
+Search the catalog and review prices, identifiers and stock levels.
+
+17
+00:01:53,320 --> 00:02:01,890
+Receive stock against a supplier instead of changing quantities by hand.
+
+18
+00:02:01,890 --> 00:02:10,460
+Select a product, batch number, expiry, quantity, cost and selling price.
+
+19
+00:02:10,460 --> 00:02:19,030
+Check totals and amount paid before confirming the purchase.
+
+20
+00:02:19,030 --> 00:02:28,600
+A confirmed purchase records the invoice and increases batch stock.
+
+21
+00:02:28,600 --> 00:02:37,290
+Review available units, reorder levels, stock value and nearest expiry.
+
+22
+00:02:37,290 --> 00:02:45,980
+Each batch keeps its own expiry, quantity and purchase cost.
+
+23
+00:02:45,980 --> 00:02:54,670
+The Expiring soon tab helps you identify products needing attention.
+
+24
+00:02:54,670 --> 00:03:04,360
+Movements show when stock entered or left the store.
+
+25
+00:03:04,360 --> 00:03:13,530
+The POS groups product search, cart and bill summary on one screen.
+
+26
+00:03:13,530 --> 00:03:22,700
+Find the exact item by name, SKU or barcode; F2 focuses search.
+
+27
+00:03:22,700 --> 00:03:31,870
+Check quantity, total and received amount before completing the sale.
+
+28
+00:03:31,870 --> 00:03:42,040
+After checkout, open or print the sale receipt and start another sale.
+
+29
+00:03:42,040 --> 00:03:47,446
+Create a customer profile and, if needed, set a credit limit.
+
+30
+00:03:47,446 --> 00:03:52,851
+Choose the customer, enter a partial payment and review the balance due.
+
+31
+00:03:52,851 --> 00:03:58,257
+Sales history keeps invoice, customer, total, balance and return actions.
+
+32
+00:03:58,257 --> 00:04:03,663
+Select the item and quantity; a return updates stock and credit together.
+
+33
+00:04:03,663 --> 00:04:09,069
+The customer directory shows the remaining outstanding amount.
+
+34
+00:04:09,069 --> 00:04:14,474
+Enter the amount collected to reduce an outstanding customer balance.
+
+35
+00:04:14,474 --> 00:04:20,880
+The demo customer now has a zero outstanding balance.
+
+36
+00:04:20,880 --> 00:04:30,610
+Choose a category, date, description, amount and payment method.
+
+37
+00:04:30,610 --> 00:04:40,340
+Saved expenses appear in a searchable list and feed the finance view.
+
+38
+00:04:40,340 --> 00:04:50,070
+Revenue less cost of goods sold and expenses gives estimated net profit.
+
+39
+00:04:50,070 --> 00:05:00,800
+Finance separates customer receivables from unpaid supplier invoices.
+
+40
+00:05:00,800 --> 00:05:09,680
+Select a report and date range to review recorded activity.
+
+41
+00:05:09,680 --> 00:05:18,560
+Use Export CSV to work with report data outside the app.
+
+42
+00:05:18,560 --> 00:05:27,440
+Stock reports help compare product quantities and inventory value.
+
+43
+00:05:27,440 --> 00:05:37,320
+Expiry reports identify batches that need prompt attention.
+
+44
+00:05:37,320 --> 00:05:43,420
+The Owner can review users and create accounts for staff.
+
+45
+00:05:43,420 --> 00:05:49,520
+Give each staff member their own credentials and appropriate role.
+
+46
+00:05:49,520 --> 00:05:55,620
+Review profile details, preferences and the local demo-data tools.
+
+47
+00:05:55,620 --> 00:06:01,720
+Click Backup now, then keep another copy on a separate drive.
+
+48
+00:06:01,720 --> 00:06:07,820
+An Owner must confirm a restore; a safety backup is made first.
+
+49
+00:06:07,820 --> 00:06:13,920
+Keyboard shortcuts and workflow guidance remain available in Help.
+
+50
+00:06:13,920 --> 00:06:20,920
+Use fictional data for practice, then start with your own records and regular backups.

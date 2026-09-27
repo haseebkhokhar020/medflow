@@ -38,3 +38,11 @@ Thumbs.db
 .vscode/
 .idea/
 *.log
+
+# The demo MP4 is distributed as a GitHub Release asset, not committed.
+demo/*.mp4
+demo/audio/
+demo/stills/
+demo/capture.mjs
+demo/render_video.py
+demo/storyboard.json
