@@ -1,22 +1,24 @@
 # MedFlow Desktop
 
-**MedFlow 1.0.1** is an offline-first pharmacy business/POS application for Windows, with local SQLite storage and an Electron + React/TypeScript interface. The store owner confirmed the v1.0.0 core pharmacy workflow on **Windows 10**; v1.0.1 is a focused Restore UI fix. Its Windows installers are built in CI, but have not independently been tested through the full workflow on Windows. No hosted database, cloud login, or internet connection is required for ordinary operations.
+**MedFlow 1.1.0** is an offline-first pharmacy business/POS application for Windows, with local SQLite storage and an Electron + React/TypeScript interface. The store owner confirmed the v1.0.0 core pharmacy workflow on **Windows 10**; This release adds a built-in offline medicine finder. The owner-confirmed full Windows 10 workflow was performed on the v1.0.0 baseline; the v1.1.0 installers are CI-built but have not yet been independently retested through the full workflow on Windows. No hosted database, cloud login, or internet connection is required for ordinary operations.
 
-**Copyright and license:** Public source repository, **all rights reserved**. No permission to redistribute, rebrand, or commercially deploy the source is granted by its public availability. Downloading the official installer does not grant a source-code license.
+**Copyright and license:** Public source repository, **all rights reserved**. No permission to redistribute, rebrand, or commercially deploy the source is granted by its public availability. Downloading the official installer does not grant a source-code license. The bundled third-party medicine terminology has **separate upstream data terms and attribution**; see [its notice](assets/medicine/NOTICE.md).
 
 ## Install MedFlow
 
 Download the current stable installer from the [official GitHub Releases page](https://github.com/haseebkhokhar020/medflow/releases/latest):
 
-- `MedFlow-Setup-1.0.1-x64.exe` — 64-bit Windows.
-- `MedFlow-Setup-1.0.1-ia32.exe` — 32-bit Windows.
+- `MedFlow-Setup-1.1.0-x64.exe` — 64-bit Windows.
+- `MedFlow-Setup-1.1.0-ia32.exe` — 32-bit Windows.
 - `SHA256SUMS.txt` — verify downloads if possible.
 
 Run the `.exe`, follow the setup screens, and open MedFlow from the Start Menu. Users do **not** need Node.js, npm, Python, or SQLite installed. Installers are currently **unsigned**, so Windows SmartScreen may display a publisher warning. Only obtain installers from this repository's official Releases page. Tested user workflow: **Windows 10**; Windows 7/8/8.1/11 and each printer/scanner combination still require their own compatibility testing.
 
-**Updating from 0.1.0:** Make a manual backup first and store a copy on another drive. Version 1.0.1 creates and verifies an additional pre-upgrade SQLite backup **before** it modifies an existing database. Customer data is stored outside the installation directory and is not removed by uninstalling or updating the application. Do not run multiple versions simultaneously.
+**Updating from 0.1.0:** Make a manual backup first and store a copy on another drive. Version 1.1.0 creates and verifies an additional pre-upgrade SQLite backup **before** it modifies an existing database. Customer data is stored outside the installation directory and is not removed by uninstalling or updating the application. Do not run multiple versions simultaneously.
 
-**Video guide:** [Watch or download the complete Urdu-narrated walkthrough](https://github.com/haseebkhokhar020/medflow/releases/download/v1.0.1/MedFlow-Complete-Walkthrough-1.0.1.mp4) (6 min 21 sec, English instructional captions). See the [chapter guide](demo/README.md) and [downloadable captions](demo/MedFlow-Walkthrough-English-Captions.srt). The v1.0.0 installer does not display the Owner Restore action shown in the video.
+**Offline medicine lookup (new in 1.1.0):** Products → Find a medicine shows Pakistan manufacturer examples first and 17,378 international NLM RxTerms entries. Pick the exact form/strength, enter the local selling price and optionally scan the package barcode. Stock, batch, expiry and purchase cost are still entered at receipt. The dictionary is not a worldwide medicines registry, does not establish Pakistan registration or availability, and is never medical advice. See [dataset provenance and safety notes](docs/MEDICINE_CATALOG.md).
+
+**Earlier v1.0.1 video guide:** [Watch or download the complete Urdu-narrated walkthrough](https://github.com/haseebkhokhar020/medflow/releases/download/v1.0.1/MedFlow-Complete-Walkthrough-1.0.1.mp4) (6 min 21 sec, English instructional captions). See the [chapter guide](demo/README.md) and [downloadable captions](demo/MedFlow-Walkthrough-English-Captions.srt). That earlier video does **not** yet show the 1.1.0 medicine finder; see the [finder screenshot](docs/medicine-finder.png) and [quick-add screenshot](docs/medicine-quick-add.png). The v1.0.0 installer does not display the Owner Restore action shown in the video.
 
 ## Included workflows
 

@@ -22,3 +22,7 @@ The store owner confirmed the full core workflow on **Windows 10** before the 1.
 - Timed background backups without a sign-in event and automatic cloud sync (the latter is not part of local version 1).
 
 MedFlow does not diagnose, advise on treatment, or recommend medication.
+
+## Offline medicine dictionary (v1.1.0)
+
+The bundled finder contains six manually verified Pakistan-market Panadol examples and 17,378 current NLM RxTerms entries reflecting mostly US terminology. It is neither a complete worldwide product list nor a DRAP registry or price list. Verify the physical pack, local registration, selling unit, prescription status, current shelf price, barcode, batch and expiry; the catalogue never creates stock or guarantees availability. See [data provenance and usage](MEDICINE_CATALOG.md).
