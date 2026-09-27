@@ -4,13 +4,15 @@ const fs=require('fs');
 const path=require('path');
 const zlib=require('zlib');
 const region=require('../assets/medicine/pakistan.json');
+const everyday=require('../assets/medicine/everyday.json');
 let cache;
 function load(){
  if(cache)return cache;
  const file=path.join(__dirname,'../assets/medicine/rxterms-202609.json.gz');
  const international=JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8'));
- const rows=[...region.map(x=>({...x,market:'Pakistan',source:'Haleon Pakistan product information',priority:0})),
-  ...international.map(x=>({...x,market:'International / US terminology',source:'NLM RxTerms 2026-09',priority:1}))];
+ const rows=[...region.map(x=>({...x,market:'Pakistan',source:'Haleon Pakistan product information',category:'Medicine',priority:0})),
+  ...everyday.map(x=>({...x,priority:0})),
+  ...international.map(x=>({...x,market:'International / US terminology',source:'NLM RxTerms 2026-09',category:'Medicine',priority:1}))];
  const byId=new Map();
  for(const row of rows){
   row.key=[row.name,row.brand,row.generic,row.aliases].filter(Boolean).join(' ').toLocaleLowerCase('en');

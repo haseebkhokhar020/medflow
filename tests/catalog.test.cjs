@@ -63,7 +63,7 @@ test('upgrading an existing 1.0.1 store preserves products and creates a safety 
   const auth=svc.call('login',{username:'owner',password:'test-password-123'}).token;
   assert.equal(svc.call('listProducts',{_token:auth}).rows[0].name,'Existing Inventory Item');
   assert.equal(svc.call('listMedicineSuggestions',{_token:auth,q:'Panadol'}).rows.length>0,true);
-  const back=svc.call('listBackups',{_token:auth}).find(x=>x.name.includes('preupgrade-1_0_1-to-1_1_0'));
+  const back=svc.call('listBackups',{_token:auth}).find(x=>x.name.includes('preupgrade-1_0_1-to-'+require('../package.json').version.replaceAll('.','_')));
   assert.ok(back,'verified pre-upgrade backup for the existing store');
   const snapshot=new Database(path.join(root,'backups',back.name),{readonly:true});
   assert.equal(snapshot.prepare('SELECT name FROM products WHERE barcode=?').get('OLD001').name,'Existing Inventory Item');snapshot.close();
