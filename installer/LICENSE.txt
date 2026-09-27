@@ -1,0 +1,5 @@
+MedFlow version 0.1.0 — Evaluation software
+
+This software is provided for evaluation and internal testing. It has not been
+certified for production deployment on any Windows version. Do not use it as
+the sole repository for customer data. Keep independent backups.

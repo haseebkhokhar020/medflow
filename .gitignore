@@ -1,0 +1,40 @@
+# Dependencies and generated frontend
+node_modules/
+dist/
+release/
+coverage/
+*.tsbuildinfo
+
+# Local business/test data and SQLite sidecars
+.medflow-data/
+.test-data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.db
+*.db-wal
+*.db-shm
+backups/
+logs/
+reports/
+uploads/
+
+# Locally packaged downloads, never committed to source history
+MedFlow-Setup-*.exe
+MedFlow-portable-*.zip
+MedFlow-source.zip
+*.msi
+
+# Secrets and machine-local tooling
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.p12
+*.key
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

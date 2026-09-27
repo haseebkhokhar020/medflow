@@ -1,0 +1,68 @@
+{
+  "name": "medflow-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first pharmacy management for Windows",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:api\" \"npm:dev:ui\"",
+    "dev:api": "node server/http.cjs",
+    "dev:ui": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "desktop": "electron .",
+    "pack:win": "npm run build && electron-builder --win nsis --x64",
+    "pack:win32": "npm run build && electron-builder --win nsis --ia32",
+    "test": "node --test tests/*.test.cjs",
+    "pack:linux:win": "bash scripts/package-linux.sh"
+  },
+  "dependencies": {
+    "better-sqlite3": "8.7.0",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "electron": "22.3.27",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.15"
+  },
+  "build": {
+    "appId": "com.medflow.pharmacy",
+    "productName": "MedFlow",
+    "artifactName": "MedFlow-Setup-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "desktop/**/*",
+      "server/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*"
+    ],
+    "extraMetadata": {
+      "main": "desktop/main.cjs"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/medflow.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
