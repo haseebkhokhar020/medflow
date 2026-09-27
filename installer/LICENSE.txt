@@ -1,5 +1,9 @@
-MedFlow version 0.1.0 — Evaluation software
+MedFlow version 1.0.0 — Windows desktop application
+Copyright 2026 MedFlow. All rights reserved.
 
-This software is provided for evaluation and internal testing. It has not been
-certified for production deployment on any Windows version. Do not use it as
-the sole repository for customer data. Keep independent backups.
+This installer is provided through the official MedFlow GitHub Releases page.
+MedFlow is pharmacy business-management software, not a medical device or
+clinical recommendation service. Protect accounts and customer data, keep
+independent backups, and review known limitations before using it in a store.
+Database files and backups are not encrypted at rest. The installer is not
+code-signed. No open-source license is granted by access to the source code.

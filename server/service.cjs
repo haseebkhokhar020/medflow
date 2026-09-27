@@ -8,8 +8,28 @@ const hash=p=>{const salt=crypto.randomBytes(16).toString('hex');return salt+':'
 const check=(p,h)=>{try{const [salt,stored]=h.split(':');return crypto.timingSafeEqual(Buffer.from(stored,'hex'),crypto.scryptSync(p,salt,64))}catch{return false}};
 const iso=()=>new Date().toISOString();const day=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 function createService(root){
+ const appVersion=require('../package.json').version;
  fs.mkdirSync(root,{recursive:true});for(const sub of ['backups','logs','reports','uploads'])fs.mkdirSync(path.join(root,sub),{recursive:true});
- const dbPath=path.join(root,'medflow.sqlite'),backupDir=path.join(root,'backups');const logError=(method,error)=>{try{fs.appendFileSync(path.join(root,'logs','medflow.log'),`${iso()} [${method}] ${String(error?.code||error?.message||'Unexpected failure').replace(/[\r\n]/g,' ').slice(0,400)}\n`)}catch{}};let db=new Database(dbPath);let sessions=new Map();
+ const dbPath=path.join(root,'medflow.sqlite'),backupDir=path.join(root,'backups');const existed=fs.existsSync(dbPath);const logError=(method,error)=>{try{fs.appendFileSync(path.join(root,'logs','medflow.log'),`${iso()} [${method}] ${String(error?.code||error?.message||'Unexpected failure').replace(/[\r\n]/g,' ').slice(0,400)}\n`)}catch{}};let db=new Database(dbPath);let sessions=new Map();
+ // Before any schema write, take a consistent SQLite snapshot of older on-disk data.
+ // VACUUM INTO includes committed WAL transactions; a plain file copy would not.
+ if(existed){try{
+   db.pragma('busy_timeout = 5000');
+   if(!db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='settings'").get())throw Error('Existing database has no MedFlow settings table.');
+   const r=db.prepare('SELECT value FROM settings WHERE key=?').get('appVersion');
+   const prior=r?JSON.parse(r.value):'0.1.0';
+   const compare=(v)=>String(v).split('.').map(x=>Number(x)||0);
+   const a=compare(prior),b=compare(appVersion);
+   if(a.some((n,i)=>n>(b[i]||0)&&a.slice(0,i).every((v,j)=>v===(b[j]||0))))throw Error('This database was opened by a newer MedFlow version. Downgrading is blocked.');
+   if(prior!==appVersion){
+     if(db.pragma('integrity_check',{simple:true})!=='ok')throw Error('Existing database failed its integrity check.');
+     const name=`medflow-preupgrade-${String(prior).replace(/[^a-zA-Z0-9]/g,'_')}-to-${appVersion.replace(/[^a-zA-Z0-9]/g,'_')}-${iso().replace(/[:.]/g,'-')}.sqlite`;
+     const target=path.join(backupDir,name);
+     db.prepare('VACUUM INTO ?').run(target);
+     const verify=new Database(target,{readonly:true,fileMustExist:true});
+     try{if(verify.pragma('integrity_check',{simple:true})!=='ok')throw Error('Pre-upgrade backup failed verification.')}finally{verify.close()}
+   }
+ }catch(e){logError('preUpgradeBackup',e);db.close();throw Error(`Unable to safely open MedFlow: ${e.message}. The existing database was not migrated.`)}}
  function open(){db.pragma('journal_mode = WAL');db.pragma('foreign_keys = ON');db.pragma('busy_timeout = 5000');db.exec(`
  CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
  CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY,name TEXT NOT NULL,username TEXT NOT NULL UNIQUE,password_hash TEXT NOT NULL,role TEXT NOT NULL DEFAULT 'Cashier',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);
@@ -35,6 +55,7 @@ function createService(root){
  CREATE INDEX IF NOT EXISTS idx_movements_time ON movements(created_at);
  CREATE INDEX IF NOT EXISTS idx_audit_time ON audit(created_at);
  `);if(!db.pragma('table_info(purchase_items)').some(c=>c.name==='returned'))db.exec('ALTER TABLE purchase_items ADD COLUMN returned INTEGER NOT NULL DEFAULT 0')}open();
+ db.prepare('INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run('appVersion',JSON.stringify(appVersion));
  const one=(sql,...args)=>db.prepare(sql).get(...args);const all=(sql,...args)=>db.prepare(sql).all(...args);
  const getSetting=k=>{const r=one('SELECT value FROM settings WHERE key=?',k);return r?JSON.parse(r.value):null};
  const setting=(k,v)=>db.prepare('INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(k,JSON.stringify(v));

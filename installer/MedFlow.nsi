@@ -39,7 +39,7 @@ Section "MedFlow" SEC_APP
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   WriteRegStr HKCU "Software\MedFlow" "InstallPath" "$INSTDIR"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\MedFlow" "DisplayName" "MedFlow Pharmacy"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\MedFlow" "DisplayVersion" "0.1.0"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\MedFlow" "DisplayVersion" "1.0.0"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\MedFlow" "Publisher" "MedFlow"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\MedFlow" "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\MedFlow" "DisplayIcon" "$INSTDIR\medflow.ico"

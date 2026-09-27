@@ -1,62 +1,60 @@
 # MedFlow Desktop
 
-> **Evaluation software.** Public source repository, **all rights reserved**: no open-source reuse or redistribution license is granted. Do not use live pharmacy data until Windows acceptance testing and security review are completed.
+**MedFlow 1.0** is an offline-first pharmacy business/POS application for Windows, with local SQLite storage and an Electron + React/TypeScript interface. The store owner has confirmed the complete core pharmacy workflow on **Windows 10**. No hosted database, cloud login, or internet connection is required for ordinary operations.
 
-Local-first pharmacy management application. Electron 22 + React/TypeScript + SQLite (`better-sqlite3`). No cloud dependencies are used for normal operation. Customer data is stored under Electron's per-user `userData/data` directory, never alongside the installed application.
+**Copyright and license:** Public source repository, **all rights reserved**. No permission to redistribute, rebrand, or commercially deploy the source is granted by its public availability. Downloading the official installer does not grant a source-code license.
 
-## What works
+## Install MedFlow
 
-- First-run setup and password-protected users (scrypt password hashes); Owner, Manager, Cashier, Inventory, and Accountant server-enforced role permissions.
-- Product catalog, barcode / generic / SKU lookup, validated CSV product import (up to 2,000 rows per file).
-- Supplier and customer records; batch-based purchases; transactional, FEFO sales with expiry blocking, prescription confirmation, credit sales and customer/supplier payments.
-- Stock adjustments and movements; returns against original sale items; expenses; finance overview; CSV reports; thermal-style HTML receipt print / print-to-PDF.
-- Auditable actions, notifications derived from live data, manual and optional daily-at-login SQLite backups (14-copy rotation), diagnostic log export, and guarded restore with a safety backup.
-- Optional clearly marked demo products, removable if they have no transaction history.
+Download the current stable installer from the [official GitHub Releases page](https://github.com/haseebkhokhar020/medflow/releases/latest):
 
-## Run / test
+- `MedFlow-Setup-1.0.0-x64.exe` — 64-bit Windows.
+- `MedFlow-Setup-1.0.0-ia32.exe` — 32-bit Windows.
+- `SHA256SUMS.txt` — verify downloads if possible.
+
+Run the `.exe`, follow the setup screens, and open MedFlow from the Start Menu. Users do **not** need Node.js, npm, Python, or SQLite installed. Installers are currently **unsigned**, so Windows SmartScreen may display a publisher warning. Only obtain installers from this repository's official Releases page. Tested user workflow: **Windows 10**; Windows 7/8/8.1/11 and each printer/scanner combination still require their own compatibility testing.
+
+**Updating from 0.1.0:** Make a manual backup first and store a copy on another drive. Version 1.0 creates and verifies an additional pre-upgrade SQLite backup **before** it modifies an existing database. Customer data is stored outside the installation directory and is not removed by uninstalling or updating the application. Do not run multiple versions simultaneously.
+
+## Included workflows
+
+- First-run store setup; password-protected local accounts and role-checked operations.
+- Products, validated CSV imports, barcode/generic/SKU lookup, suppliers, customers and balances.
+- Batch purchases, FEFO point of sale, expired-stock blocking, prescription-required confirmation, receipt printing through the Windows print dialog, credit sales and payments.
+- Sales and purchase returns, stock audit movements and adjustments, expiry alerts, operating expenses, finance overview, dashboard and CSV reports.
+- Audit log, manual and optional daily-at-login database backups with rotation, verified restore with safety backup, diagnostic log export and optional labeled demo data.
+
+## Data and security
+
+- Business data: `<Electron userData>/data/medflow.sqlite`; backups: `data/backups`. Nothing is hosted remotely for core operation.
+- Passwords use salted `scrypt` hashes; important business writes are SQLite transactions; price amounts are stored in integer minor currency units.
+- Business databases and backups are **not encrypted at rest**. Protect Windows accounts, use full-disk encryption if needed, and retain independent backups.
+- This is **not** an electronic health record or a medical advice tool. It is not independently security-audited or regulatory-certified.
+
+## Develop and test
 
 ```sh
 npm ci
 npm test
-npm run dev      # Browser development preview: Vite :5173, local API :4174
+npm run dev      # Browser development preview: Vite :5173, loopback-only API :4174
 npm run build
 ```
 
-The browser preview uses a **development-only** localhost API. The packaged Electron application instead uses a context-isolated preload IPC bridge; it does not launch or require an HTTP server.
+The browser preview uses a local development HTTP bridge; the packaged desktop app uses context-isolated Electron IPC and launches no web server.
 
-### Windows installer
+### Build Windows installers
 
-Build **on Windows** with Node 20 and native build tools (Visual Studio C++ build tools if a prebuilt SQLite addon is unavailable):
+On Windows, with Node 20 and C++ build tools if the native SQLite prebuild is unavailable:
 
 ```powershell
 npm ci
 npm test
 npm run pack:win       # x64 NSIS installer
-npm run pack:win32     # x86 NSIS installer; requires 32-bit native addon build support
+npm run pack:win32     # x86 NSIS installer
 ```
 
-Installers appear under `release/`. GitHub Actions workflow `.github/workflows/windows-build.yml` automates both builds. The supplied `MedFlow-Setup-0.1.0-x64.exe` is a compiled but **unverified** NSIS installer. An evaluation x64 NSIS installer can also be cross-built on Linux with `npm run pack:linux:win` using a local `makensis` binary and the Windows SQLite prebuild. That build is **not tested on Windows** and its EXE resource icon is not edited without Wine. For a verified installer, build and test on Windows. Electron 22 is used because Electron 23+ dropped Windows 7/8/8.1 support; **compatibility of the installer on real Windows 7–11 machines has not been validated here**. Future Electron upgrades should be accompanied by a separate legacy build strategy. The installer is not code signed.
+Installers are generated in `release/`. `.github/workflows/windows-build.yml` tests the app and compiles both architectures on Windows CI; manually dispatched runs retain short-lived artifacts for release preparation. `npm run pack:linux:win` can cross-build an installer with Linux NSIS but does not replace Windows CI or installation testing. GitHub Packages is designed for registries (npm/containers), not for a standalone Windows `.exe`: distribute the `.exe` through **GitHub Releases**.
 
-## Download an evaluation installer
+## Support and limitations
 
-When a beta prerelease is published, use the [GitHub Releases page](https://github.com/haseebkhokhar020/medflow/releases). Choose `MedFlow-Setup-0.1.0-x64.exe` for 64-bit Windows or `MedFlow-Setup-0.1.0-ia32.exe` for 32-bit Windows. Compare the downloaded file with `SHA256SUMS.txt` in the same release. The installers are unsigned and have not been through real-device Windows 7–11 installation, scanner, or printer acceptance testing. **Do not use real customer data yet.**
-
-GitHub Packages is not the appropriate distribution channel for a standalone Windows `.exe`; the installer is delivered as a GitHub Release asset, not as an npm or container package.
-
-## Linux NSIS cross-build (unverified)
-
-Run `npm run pack:linux:win` after obtaining a Linux NSIS `makensis` binary (set `MAKENSIS` if necessary). The script bundles the Windows Electron app, installs the matching Windows Electron SQLite addon and compiles `installer/MedFlow.nsi` into `release/MedFlow-Setup-0.1.0-x64.exe`. The NSIS installer creates Start Menu shortcuts, offers an optional Desktop shortcut, registers with Apps & Features and preserves app-data on uninstall. This is **a compiled artifact, not a passed installation test**.
-
-## Data and security
-
-- Customer database: `<Electron userData>/data/medflow.sqlite` (SQLite WAL mode; backups in `data/backups`; directories also reserved for logs, reports and uploads).
-- Local files are **not encrypted at rest**. Use Windows account permissions, disk encryption and offline encrypted storage for backups containing sensitive customer data.
-- Keep a copied backup on a separate device. Restore requires an Owner account and typed confirmation, checks SQLite integrity, creates a pre-restore safety backup, and ends all sessions.
-- Prices are stored as integer minor currency units; quantities as whole units. Amounts shown in the UI are converted to major units.
-- Sale/purchase/return/payment/adjustment writes are performed inside SQLite transactions. FEFO selection excludes expired batches; all stock deltas create movement records.
-
-## Scope / not yet production-ready
-
-This is a working application foundation and tested core workflow, **not a certified production release**. Before deployment: run and sign Windows installers on each supported OS/architecture; test thermal/A4 printers, USB scanners, backups on removable media, high-volume pagination/exports and power-loss recovery; commission a security review. Remaining requested workflows include multi-barcode support, configurable granular permissions, recurring expenses, full accounting/cash-flow reports, automated migration versioning, timed background backups independent of sign-in, and localization. CSV export is supported; XLSX import/export is not. Receipts can be saved as PDF via the OS print dialog. No medical advice or diagnosis features are provided.
-
-See [architecture](docs/ARCHITECTURE.md), [deployment gate and feature gaps](docs/KNOWN_LIMITATIONS.md), and [security policy](SECURITY.md). This repository intentionally does not contain Windows installer binaries, databases, or backups.
+See [architecture](docs/ARCHITECTURE.md), [known limitations and compatibility](docs/KNOWN_LIMITATIONS.md) and [security reporting](SECURITY.md). Remaining planned capabilities include multi-barcode support, granular permission configuration, full accounting/cash-flow reporting, XLSX import/export, formal stock counts and localization. Do not present this business application as a diagnostic or prescription recommendation system.

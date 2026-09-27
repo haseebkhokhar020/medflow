@@ -31,3 +31,24 @@ test('authentication and permission enforcement',async()=>{const root=fs.mkdtemp
 test('supplier return rejects sold stock and applies unpaid supplier credit atomically',()=>{const root=fs.mkdtempSync(path.join(os.tmpdir(),'medflow-test-'));const svc=createService(root);const direct=(m,a={})=>svc.call(m,a);direct('setup',{store:'Test',name:'Owner',username:'owner',password:'abcdefgh'});const token=direct('login',{username:'owner',password:'abcdefgh'}).token;const call=(m,a={})=>direct(m,{...a,_token:token});call('saveSupplier',{name:'Wholesale'});call('saveProduct',{name:'Gloves',retail:10,purchase:5});const s=call('listSuppliers')[0].id,p=call('listProducts').rows[0].id;const pur=call('purchase',{supplier_id:s,invoice_no:'PUR-1',paid:0,items:[{product_id:p,batch_no:'B1',expiry:'2028-12-31',quantity:10,cost:5,price:10}]});call('sale',{items:[{product_id:p,quantity:3}]});const item=call('getPurchase',{id:pur.id}).items[0];assert.throws(()=>call('returnPurchase',{item_id:item.id,quantity:8,reason:'Oversupplied'}),/Only 7 units/);assert.equal(call('listProducts').rows[0].stock,7);const ret=call('returnPurchase',{item_id:item.id,quantity:2,reason:'Oversupplied'});assert.equal(ret.creditApplied,1000);assert.equal(call('listSuppliers')[0].balance,4000);assert.equal(call('listProducts').rows[0].stock,5);svc.close();fs.rmSync(root,{recursive:true,force:true})});
 test('CSV validation refuses duplicate SKU and commits all or nothing',()=>{const root=fs.mkdtempSync(path.join(os.tmpdir(),'medflow-test-'));const svc=createService(root);svc.call('setup',{store:'Test',name:'Owner',username:'owner',password:'abcdefgh'});const token=svc.call('login',{username:'owner',password:'abcdefgh'}).token;const call=(m,a={})=>svc.call(m,{...a,_token:token});const rows=[{name:'Aspirin',sku:'ASP',retail:'25.50'},{name:'Duplicate',sku:'ASP',retail:'12'}];const dry=call('importProducts',{rows,dryRun:true});assert.equal(dry.valid,false);assert.throws(()=>call('importProducts',{rows}),/Import blocked/);assert.equal(call('listProducts').total,0);assert.equal(call('importProducts',{rows:rows.slice(0,1)}).count,1);assert.equal(call('listProducts').rows[0].retail,2550);svc.close();fs.rmSync(root,{recursive:true,force:true})});
 test('automatic daily backups are made at login and manual diagnostics can be exported',async()=>{const root=fs.mkdtempSync(path.join(os.tmpdir(),'medflow-test-'));const svc=createService(root);svc.call('setup',{store:'Test',name:'Owner',username:'owner',password:'abcdefgh'});let auth=svc.call('login',{username:'owner',password:'abcdefgh'});svc.call('saveSettings',{_token:auth.token,store:{name:'Test'},currency:'PKR',preferences:{automaticBackup:true}});auth=await svc.call('login',{username:'owner',password:'abcdefgh'});const files=svc.call('listBackups',{_token:auth.token});assert.equal(files.filter(x=>x.name.startsWith('medflow-auto-')).length,1);assert.equal(typeof svc.call('diagnosticLogs',{_token:auth.token}),'string');svc.close();fs.rmSync(root,{recursive:true,force:true})});
+test('upgrading a v0.1 database creates a verified pre-migration backup and retains its records',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'medflow-upgrade-'));
+ let svc=createService(root);
+ svc.call('setup',{store:'Existing Pharmacy',name:'Owner',username:'owner',password:'abcdefgh'});
+ const token=svc.call('login',{username:'owner',password:'abcdefgh'}).token;
+ svc.call('saveSupplier',{_token:token,name:'Existing Supplier'});
+ svc.close();
+ // 0.1.0 installations had no appVersion setting.
+ const legacy=new (require('better-sqlite3'))(path.join(root,'medflow.sqlite'));
+ legacy.prepare('DELETE FROM settings WHERE key=?').run('appVersion');legacy.close();
+ svc=createService(root);
+ const newToken=svc.call('login',{username:'owner',password:'abcdefgh'}).token;
+ assert.equal(svc.call('listSuppliers',{_token:newToken})[0].name,'Existing Supplier');
+ const backups=svc.call('listBackups',{_token:newToken});
+ assert.equal(backups.filter(b=>b.name.includes('preupgrade')).length,1);
+ const snapshot=new (require('better-sqlite3'))(path.join(root,'backups',backups[0].name),{readonly:true});
+ assert.equal(snapshot.pragma('integrity_check',{simple:true}),'ok');
+ assert.equal(snapshot.prepare('SELECT value FROM settings WHERE key=?').get('appVersion'),undefined);
+ assert.equal(snapshot.prepare('SELECT name FROM suppliers').get().name,'Existing Supplier');
+ snapshot.close();svc.close();fs.rmSync(root,{recursive:true,force:true});
+});

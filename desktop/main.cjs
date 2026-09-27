@@ -1,6 +1,9 @@
 const {app, BrowserWindow, ipcMain, dialog, shell} = require('electron');
 const path = require('path');
 let win, service;
+if(!app.requestSingleInstanceLock())app.quit();
+else{
+app.on('second-instance',()=>{if(win){if(win.isMinimized())win.restore();win.focus()}});
 app.whenReady().then(()=>{
   service=require('../server/service.cjs').createService(path.join(app.getPath('userData'),'data'));
   ipcMain.handle('medflow:call',async (_event, method, args)=>{
@@ -12,6 +15,7 @@ app.whenReady().then(()=>{
   win.once('ready-to-show',()=>win.show());
   win.loadFile(path.join(__dirname,'../dist/index.html'));
   win.on('closed',()=>{win=null});
-});
+}).catch(error=>{dialog.showErrorBox('MedFlow could not start',error.message||String(error));app.quit()});
+}
 app.on('window-all-closed',()=>{if(process.platform!=='darwin')app.quit()});
 app.on('before-quit',()=>{try{service?.close()}catch{}});

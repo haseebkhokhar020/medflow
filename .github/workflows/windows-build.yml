@@ -36,7 +36,7 @@ jobs:
       - run: npm run build
       - run: npx electron-builder --win nsis --${{ matrix.arch }} --publish never
       # Manual release-candidate runs make installers available to the maintainer.
-      # A public prerelease is created separately, only after CI succeeds.
+      # A versioned public Release is created separately after CI and owner sign-off.
       - uses: actions/upload-artifact@v4
         if: github.event_name == 'workflow_dispatch'
         with:

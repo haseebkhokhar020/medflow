@@ -21,13 +21,13 @@ The browser development preview uses `server/http.cjs` instead of Electron IPC. 
 - Stock changes are recorded in `movements`; sensitive operations are recorded in `audit`.
 - Sales, purchases, returns, stock adjustments, and payments use SQLite transactions. Selling allocates non-expired batches FEFO.
 - Product prices are integer minor currency units; quantities are whole units.
-- Database backups use SQLite's online backup facility. Restore checks integrity, creates a safety backup, and invalidates sessions.
+- Database backups use SQLite's online backup facility. On version change, MedFlow first creates and verifies a consistent pre-upgrade SQLite snapshot (VACUUM INTO) before altering the database. Restore checks integrity, creates a safety backup, and invalidates sessions.
 
 ## Windows builds
 
 - `npm run pack:win` / `npm run pack:win32`: build NSIS on Windows with electron-builder.
-- `npm run pack:linux:win`: evaluation-only Linux cross-build with a Linux NSIS compiler and the matching Windows/Electron SQLite addon. It **does not** test a Windows install.
-- CI checks tests and both Windows installer architectures. Push CI builds installers without publishing binaries. Manual release-candidate CI runs upload short-lived installer artifacts for maintainer review; approved evaluation binaries belong in a clearly labeled prerelease, not Git history.
+- `npm run pack:linux:win`: Linux cross-build with a Linux NSIS compiler and matching Windows/Electron SQLite addon; not a substitute for Windows testing.
+- CI checks tests and both Windows installer architectures. Push CI builds installers without publishing binaries. Manual release-candidate CI runs upload short-lived installer artifacts for maintainer review; approved builds belong in a GitHub Release, not Git history.
 
 ## Scaling and future work
 
